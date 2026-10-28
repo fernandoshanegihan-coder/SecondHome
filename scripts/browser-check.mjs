@@ -1,0 +1,14 @@
+import {chromium} from 'playwright';
+const browser=await chromium.launch({channel:'msedge',headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:1000}});
+page.on('pageerror',e=>console.log('PAGE ERROR',e.message));
+page.on('console',m=>{if(m.type()==='error')console.log('CONSOLE',m.text().slice(0,400));});
+page.on('requestfailed',r=>console.log('REQUEST FAILED',r.url(),r.failure()?.errorText));
+await page.goto('http://127.0.0.1:5173');
+await page.waitForTimeout(5000);
+await page.getByLabel('Your new city').fill('London');
+console.log('SEARCH ENABLED',await page.getByRole('button',{name:'Search cities'}).isEnabled());
+await page.screenshot({path:'.sites-runtime/desktop.png',fullPage:true});
+await page.setViewportSize({width:390,height:844});
+await page.screenshot({path:'.sites-runtime/mobile.png',fullPage:true});
+await browser.close();
