@@ -16,4 +16,8 @@ Ruling: Use a bounded deterministic tool workflow for this version: resolve, ret
 
 Framework: Sites Vinext starter (React and Next-compatible routes), TypeScript. Node's native test runner replaces Vitest, since this Node runtime supports TypeScript stripping; browser tests use Playwright. Cost if wrong: test-runner migration only.
 
-Pending: live checks through the finished adapters, production deployment and public access verification.
+Finished-adapter verification: London locality ID filtering returned three supported discoveries (Georgian House Hotel, The Orangery Restaurant, Sky Pod Bar) with contributions from Radiohead, Spirited Away, and Nike. Feedback replaced only the first card with The Chesterfield Mayfair. The same flow passed through the actual browser UI.
+
+Production: deployed successfully to https://second-home-taste-discoveries.daintytapir512.chatgpt.site with hosted secret revision 1. Hosted discovery returned HTTP 200 and three live Qloo places. Public audience enabled; an unauthenticated page fetch returned HTTP 200. Public source: https://github.com/fernandoshanegihan-coder/SecondHome (MIT license detected).
+
+Quota protection: per-worker memory limits of 20 requests per client and 60 total per minute. These limits are best-effort across worker isolates and are not a global spending cap. Qloo-side quota settings remain authoritative.

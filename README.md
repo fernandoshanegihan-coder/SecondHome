@@ -2,6 +2,10 @@
 
 Three personal discoveries in an unfamiliar city, connected to the things you already love.
 
+Live demo: https://second-home-taste-discoveries.daintytapir512.chatgpt.site
+
+Public source: https://github.com/fernandoshanegihan-coder/SecondHome
+
 ## Run locally
 
 Use Node.js 24 or newer and npm. Install dependencies with `npm install`, copy `.env.example` to `.env.local`, and enter your Qloo key there. Never commit that local file. Set QLOO_API_URL to the host supplied with your key (the hackathon default is https://hackathon.api.qloo.com).
