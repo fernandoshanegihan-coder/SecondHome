@@ -1,7 +1,9 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
+import { CityPoster } from "../components/city-poster";
 import {
   ArrowUpRight,
+  ArrowDownRight,
   ArrowRight,
   MapPin,
   Search,
@@ -12,7 +14,6 @@ import {
   Music2,
   BookOpen,
   Film,
-  House,
   RefreshCw,
   ChevronDown,
   Check,
@@ -34,103 +35,6 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   const d = (await r.json()) as T & { error?: { message?: string } };
   if (!r.ok) throw new Error(d.error?.message || "Please try again.");
   return d;
-}
-function CitySketch() {
-  return (
-    <div className="city-art" aria-hidden="true">
-      <div className="art-orbit" />
-      <div className="art-sun" />
-      <div className="art-caption">
-        <span>✳</span>A little familiar.
-        <br />A whole new world.
-      </div>
-      <svg className="city-drawing" viewBox="0 0 520 330" fill="none">
-        <path d="M20 291H502M35 306H472" stroke="#a4aa8c" />
-        <path
-          d="M82 283V158L143 128L204 158V283"
-          fill="#d9dfc4"
-          stroke="#5d7055"
-          strokeWidth="2"
-        />
-        <path
-          d="M76 158L143 114L211 158M143 114V88M133 88H154"
-          stroke="#5d7055"
-          strokeWidth="2"
-        />
-        <path
-          d="M102 181H125V211H102ZM159 181H182V211H159ZM102 229H125V259H102ZM158 241Q171 217 184 241V283H158Z"
-          fill="#fcf9ee"
-          stroke="#5d7055"
-          strokeWidth="2"
-        />
-        <path
-          d="M220 283V109H324V283"
-          fill="#e9cfad"
-          stroke="#946a4d"
-          strokeWidth="2"
-        />
-        <path d="M214 109H330L318 96H226Z" fill="#946a4d" />
-        <path
-          d="M237 128H256V155H237ZM286 128H305V155H286ZM237 176H256V203H237ZM286 176H305V203H286ZM230 245H315V283H230Z"
-          fill="#fff9ec"
-          stroke="#946a4d"
-          strokeWidth="2"
-        />
-        <path d="M226 226H318L325 244H219Z" fill="#57705b" />
-        <path
-          d="M239 226L236 244M257 226L256 244M277 226V244M296 226L298 244M311 226L316 244"
-          stroke="#f8f4e5"
-          strokeWidth="6"
-        />
-        <text x="252" y="220" fontSize="10" fill="#5e644c" fontFamily="Georgia">
-          CAFÉ
-        </text>
-        <path
-          d="M344 283V172L386 139L430 172V283Z"
-          fill="#e7e8d8"
-          stroke="#67775c"
-          strokeWidth="2"
-        />
-        <path d="M339 172L386 132L436 172" stroke="#67775c" strokeWidth="3" />
-        <path
-          d="M360 192H377V215H360ZM398 192H415V215H398ZM377 246Q387 227 397 246V283H377Z"
-          fill="#faf7ec"
-          stroke="#67775c"
-          strokeWidth="2"
-        />
-        <path
-          d="M453 283V203M437 214Q452 184 469 215Q478 227 463 233Q447 246 433 232Q421 222 437 214Z"
-          fill="#98aa7c"
-          stroke="#607653"
-          strokeWidth="2"
-        />
-        <path
-          d="M47 283V223M32 232Q43 202 59 224Q72 237 58 244Q40 255 29 243Q20 235 32 232Z"
-          fill="#aaba8e"
-          stroke="#607653"
-          strokeWidth="2"
-        />
-        <path
-          d="M183 77Q192 69 202 77M353 87Q362 79 371 87"
-          stroke="#8c9677"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="art-pin">
-        <MapPin size={17} />
-        Your next chapter
-      </div>
-      <div className="art-stamp">
-        <Compass size={25} />
-        <span>
-          GO WHERE
-          <br />
-          YOU FEEL YOU
-        </span>
-      </div>
-    </div>
-  );
 }
 function DiscoveryCard({
   item,
@@ -306,7 +210,10 @@ export default function Home() {
       setTimeout(
         () =>
           resultsRef.current?.scrollIntoView({
-            behavior: "smooth",
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+              .matches
+              ? "auto"
+              : "smooth",
             block: "start",
           }),
         100,
@@ -348,60 +255,80 @@ export default function Home() {
     <>
       <header className="site-header">
         <a className="brand" href="/" aria-label="Second Home">
-          <span className="brand-mark">
-            <House size={21} strokeWidth={1.6} />
+          <span className="brand-symbol" aria-hidden="true">
+            sh.
           </span>
-          second home<span className="brand-dot">.</span>
+          <span>Second Home</span>
         </a>
-        <nav>
-          <a href="#how-it-works">How it works</a>
+        <nav aria-label="Main navigation">
+          <a href="#how-it-works">The idea</a>
           <a href="#discover" className="nav-start">
-            Find your places <ArrowUpRight size={15} />
+            Find your places <ArrowUpRight size={16} />
           </a>
         </nav>
       </header>
       <main>
         <section className="hero">
-          <div className="hero-copy">
-            <div className="eyebrow">
-              <span />
-              FOR NEW CITIES & NEW BEGINNINGS
-            </div>
-            <h1>
-              Somewhere new.
-              <br />
-              <em>Something you.</em>
-            </h1>
-            <p className="hero-description">
-              A new city doesn’t have to feel unfamiliar.
-              <br className="desktop-break" />
-              Find three places that connect with the things you love.
-            </p>
-            <a className="hero-link" href="#discover">
-              Find your little corner <ArrowRight size={17} />
-            </a>
-            <div className="hero-note">
-              <Compass size={16} />
-              Guided by your taste. Made for exploring on your own.
-            </div>
+          <div className="hero-topline">
+            <span>A FIELD GUIDE TO FEELING AT HOME</span>
+            <span>FOR NEW BEGINNINGS · VOL. 01</span>
           </div>
-          <CitySketch />
+          <h1 className="hero-masthead">
+            Second Home<span>.</span>
+          </h1>
+          <div className="hero-scene">
+            <div className="hero-copy">
+              <p className="eyebrow">YOUR TASTE. A NEW PLACE.</p>
+              <h2>
+                Somewhere new.
+                <br />
+                <em>Something you.</em>
+              </h2>
+              <p className="hero-description">
+                Three places in a new city, connected to the things you already
+                love.
+              </p>
+              <a className="hero-link" href="#discover">
+                Find your little corner <ArrowUpRight size={20} />
+              </a>
+              <p className="hero-note">
+                A city becomes home, one discovery at a time.
+              </p>
+            </div>
+            <CityPoster />
+          </div>
+          <div className="hero-colophon">
+            <span>EXPLORE AT YOUR OWN PACE.</span>
+            <span>
+              CULTURAL CONNECTIONS BY QLOO <ArrowDownRight />
+            </span>
+          </div>
         </section>
         <section className="discovery-builder" id="discover">
           <div className="builder-heading">
             <div>
-              <p className="eyebrow">YOUR NEXT FAVOURITE PLACE STARTS HERE</p>
-              <h2>Bring a little of you.</h2>
+              <p className="eyebrow">
+                <span className="section-index">01 /</span> THE DISCOVERY DESK
+              </p>
+              <h2>
+                Your kind of
+                <br />
+                <em>somewhere.</em>
+              </h2>
+              <p className="builder-intro">
+                Bring a few favourites. We’ll find the places that feel like
+                you.
+              </p>
             </div>
             <span className="powered">
               <span />
-              Cultural intelligence by <strong>Qloo</strong>
+              Recommendations grounded in <strong>Qloo</strong>
             </span>
           </div>
           <div className="builder-grid">
             <div className="city-step">
               <div className="step-label">
-                <span>01</span>Where are you settling in?
+                <span>A.</span>Where are you settling in?
               </div>
               <label htmlFor="city">Your new city</label>
               <form
@@ -502,7 +429,7 @@ export default function Home() {
             </div>
             <div className="taste-step">
               <div className="step-label">
-                <span>02</span>What feels like you?
+                <span>B.</span>What feels like you?
               </div>
               <label htmlFor="taste">Search a favourite</label>
               <form
@@ -588,8 +515,7 @@ export default function Home() {
                 ))}
               </div>
               <p className="field-help">
-                Add 3–5 favourites. The unexpected combinations are the good
-                ones.
+                Choose 3–5 different favourites from the search results.
               </p>
               {!tastes.length && (
                 <div className="taste-examples">
@@ -615,7 +541,7 @@ export default function Home() {
           <div className="builder-bottom">
             <p>
               <span />
-              No account. No personality quiz. Just your taste.
+              No account needed. A few favourites are enough.
             </p>
             <button
               type="button"
@@ -649,9 +575,12 @@ export default function Home() {
           >
             <div className="results-heading">
               <div>
-                <p className="eyebrow">A NEW CITY, THROUGH YOUR EYES</p>
+                <p className="eyebrow">
+                  <span className="section-index">02 /</span> YOUR FIELD NOTES
+                </p>
                 <h2>
-                  Your little corners of {context?.city.label.split(",")[0]}.
+                  A little more at home in{" "}
+                  <em>{context?.city.label.split(",")[0]}.</em>
                 </h2>
               </div>
               <span>{result.items.length} personal discoveries</span>
@@ -684,56 +613,55 @@ export default function Home() {
         )}
         <section className="how-section" id="how-it-works">
           <div className="how-intro">
-            <p className="eyebrow">LESS SEARCHING. MORE BELONGING.</p>
+            <p className="eyebrow">THE IDEA BEHIND IT</p>
             <h2>
-              A familiar feeling,
-              <br />
-              in an unfamiliar place.
+              A few favourites.
+              <br />A fresh perspective.
             </h2>
           </div>
           {[
             {
-              Icon: Music2,
               title: "Start with what you love",
               text: "The music, stories and places that make you, you.",
             },
             {
-              Icon: Sparkles,
               title: "Follow the connections",
               text: "Qloo’s taste graph connects your favourites to real places.",
             },
             {
-              Icon: Compass,
               title: "Make the city your own",
               text: "Explore three discoveries. Tell us what fits, and what doesn’t.",
             },
-          ].map(({ Icon, title, text }) => (
+          ].map(({ title, text }, index) => (
             <div className="how-item" key={title}>
-              <span className="how-icon">
-                <Icon size={21} />
-              </span>
+              <span className="how-number">0{index + 1}</span>
               <h3>{title}</h3>
               <p>{text}</p>
             </div>
           ))}
         </section>
-        <div className="closing-note">
-          <span>✳</span>
-          <p>
-            You don’t have to know anyone
+        <section className="closing-note">
+          <p className="eyebrow">A NEW CHAPTER, YOUR WAY.</p>
+          <h2>
+            Make yourself
             <br />
-            to find somewhere you belong.
-          </p>
-          <span>✳</span>
-        </div>
+            <em>at home.</em>
+          </h2>
+          <a href="#discover" className="closing-link">
+            Start exploring <ArrowUpRight size={24} />
+          </a>
+          <span className="closing-star" aria-hidden="true">
+            ✳
+          </span>
+        </section>
       </main>
       <footer>
         <a className="brand" href="/">
-          second home<span className="brand-dot">.</span>
+          Second Home<span className="brand-dot">.</span>
         </a>
-        <p>A little familiar, wherever you land.</p>
+        <p>Independent discoveries. A familiar feeling.</p>
         <span>
-          Built with Qloo <ArrowUpRight size={13} />
+          Cultural intelligence by Qloo <ArrowUpRight size={13} />
         </span>
       </footer>
     </>
